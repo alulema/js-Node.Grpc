@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+message User {
+    int32 id = 1;
+    string firstName = 2;
+    string lastName = 3;
+    int64 birthday = 4;
+    repeated Vehicle vehicles = 5;
+}
+
+message Vehicle {
+    int32 id = 1;
+    string regNumber = 2;
+}
+
+message GetAllRequest {}
+
+message GetByUserIdRequest {
+    int32 userId = 1;
+}
+
+message UserRequest {
+    User user = 1;
+}
+
+message UserResponse {
+    User user = 1;
+}
+
+message AddImageRequest {
+    bytes data = 1;
+}
+
+message AddImageResponse {
+    bool isOk = 1;
+}
+
+service UserService {
+    rpc getByUserId (GetByUserIdRequest) returns (UserResponse);
+    rpc getAll (GetAllRequest) returns (stream UserResponse);
+    rpc save (UserRequest) returns (UserResponse);
+    rpc saveAll (stream UserRequest) returns (stream UserResponse);
+    rpc addImage (stream AddImageRequest) returns (AddImageResponse);
+}
